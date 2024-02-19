@@ -1,41 +1,52 @@
 package com.felipegandra.components
 
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Email
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -55,7 +66,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComponentsTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
                     color = MaterialTheme.colorScheme.background
                 )
                 {
@@ -73,7 +86,6 @@ fun Greatings() {
             .background(Color(0xFF212121))
             .fillMaxSize()
             .padding(20.dp)
-            .verticalScroll(rememberScrollState())
     )
     {
         Header()
@@ -82,6 +94,10 @@ fun Greatings() {
         TextField()
         NumberField()
         EmailField()
+        OutlinedTF()
+        CheckB()
+        Radio()
+        Botao()
     }
 }
 
@@ -107,11 +123,20 @@ fun Header() {
             fontWeight = FontWeight.Bold,
         )
         Text(
-            text = "Estudando programação Android",
+            modifier = Modifier.padding(bottom = 14.dp),
+            text = "Lets rock the future!",
             color = Color(180,180,180),
-            fontWeight = FontWeight.Light,
-            fontFamily = FontFamily.Cursive,
-            fontSize = 22.sp
+            fontWeight = FontWeight.Normal,
+            fontFamily = FontFamily.SansSerif,
+            fontSize = 16.sp
+        )
+        Spacer(
+            modifier = Modifier
+                .height(2.dp)
+                .border(
+                    BorderStroke(2.dp, Color(0xFFED145B)),
+                    shape = RectangleShape)
+                .fillMaxWidth()
         )
     }
 }
@@ -131,6 +156,7 @@ fun TextWithBorder() {
             fontSize = 16.sp,
             color = Color.White,
             textAlign = TextAlign.Center,
+            fontFamily = FontFamily.Cursive,
             fontWeight = FontWeight.Bold,
             letterSpacing = 2.sp
         )
@@ -256,9 +282,199 @@ fun EmailField() {
     }
 }
 
+@Composable
+fun OutlinedTF() {
+
+    var email by remember{ mutableStateOf("") }
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(top = 32.dp, bottom = 50.dp)) {
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = email,
+            onValueChange = { email = it},
+            singleLine = true,
+            label = { Text(text = "Qual o seu email") },
+            shape = RoundedCornerShape(32.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color.Blue,
+                unfocusedBorderColor = Color.White,
+                focusedTextColor = Color.White,
+                focusedLabelColor = Color.White,
+                unfocusedLabelColor = Color.Gray,
+                unfocusedTextColor = Color.Gray
+            ),
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Email,
+                    tint = Color.Gray,
+                    contentDescription = "ícone de configuração"
+                )
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+        )
+    }
+}
+
+@Composable
+fun CheckB() {
+    var kotlin by remember{ mutableStateOf(false) }
+    var java by remember{ mutableStateOf(false) }
+    var csharp by remember{ mutableStateOf(false) }
+
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(bottom = 50.dp)
+    ) {
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = kotlin,
+                onCheckedChange = { kotlin = it },
+                colors = CheckboxDefaults.colors(uncheckedColor = Color.White)
+            )
+            Text(text = "Kotlin", color = Color.White)
+        }
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = java,
+                onCheckedChange = { java = it },
+                colors = CheckboxDefaults.colors(uncheckedColor = Color.White)
+            )
+            Text(text = "Java", color = Color.White)
+        }
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = csharp,
+                onCheckedChange = { csharp = it },
+                colors = CheckboxDefaults.colors(uncheckedColor = Color.White)
+            )
+            Text(text = "C#", color = Color.White)
+        }
+    }
+}
+
+@Composable
+fun Radio() {
+    var stackSelecionada by remember {
+        mutableStateOf(-1)
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 50.dp)) {
+
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Row(modifier = Modifier
+                    .weight(0.5f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center)
+            {
+                RadioButton(
+                    selected = stackSelecionada == 0,
+                    onClick = { stackSelecionada = 0}
+                )
+                Text(text = "Backend", color = Color.White)
+            }
+            Row(
+                modifier = Modifier
+                    .weight(0.5f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center)
+            {
+                RadioButton(
+                    selected = stackSelecionada == 1,
+                    onClick = { stackSelecionada = 1 }
+                )
+                Text(text = "Frontend", color = Color.White)
+            }
+            Row(
+                modifier = Modifier
+                    .weight(0.5f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center)
+            {
+                RadioButton(
+                    selected = stackSelecionada == 2,
+                    onClick = { stackSelecionada = 2 }
+                )
+                Text(text = "Fullstack", color = Color.White)
+            }
+        }
+
+    }
+}
+
+@Composable
+fun Botao() {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(top = 30.dp),
+        horizontalAlignment = Alignment.CenterHorizontally){
+        Row(horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically) {
+            Button(
+                modifier = Modifier.size(width = 120.dp, height = 120.dp),
+                onClick = {  },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFDD5BE6),
+                    contentColor = Color.White
+                ),
+                border = BorderStroke(1.dp, Color.White),
+                shape = CircleShape
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        modifier = Modifier.size(20.dp),
+                        imageVector = Icons.Default.Send,
+                        contentDescription = "Enviar"
+                    )
+                    Text(
+                        text = "Enviar",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold)
+                }
+            }
+            OutlinedButton(modifier = Modifier
+                .size(width = 150.dp, height = 40.dp),
+                onClick = {  },
+                border = BorderStroke(1.dp, Color.White),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        modifier = Modifier.size(20.dp),
+                        imageVector = Icons.Default.Send,
+                        contentDescription = "Enviar"
+                    )
+                    Text(
+                        text = "Enviar",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold)
+                }
+            }
+        }
 
 
-
+    }
+}
 
 
 
@@ -277,3 +493,5 @@ fun EmailField() {
 // it é o nome automático da variável da função porém é possível nomea-la:
 // onValueChange = { x -> texto = x }
 // Não é necessário texto += x pois a variável texto é do tipo remember
+
+// RoundedCornerShape(topStart = 32.dp, bottomEnd = 32.dp)
