@@ -29,6 +29,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,6 +41,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.felipegandra.calculadoraimc.ui.theme.CalculadoraIMCTheme
@@ -62,6 +64,11 @@ class MainActivity : ComponentActivity() {
 }
 
 
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun IMCScreenPreview() {
+    IMCScreen()
+}
 
 
 @Composable
@@ -75,10 +82,14 @@ fun IMCScreen()
         mutableStateOf("")
     }
     var imc by remember {
-        mutableStateOf(0.0)
+        mutableDoubleStateOf(0.0)
     }
     var statusImc by remember {
         mutableStateOf("")
+    }
+
+    var corResultado by remember {
+        mutableStateOf(Color(0xFF648264))
     }
 
 
@@ -94,7 +105,7 @@ fun IMCScreen()
            Column(
                modifier = Modifier
                    .fillMaxWidth()
-                   .height(200.dp)
+                   .height(220.dp)
                    .background(colorResource(id = R.color.vermelho_fiap)),
                horizontalAlignment = Alignment.CenterHorizontally
            ) {
@@ -102,13 +113,13 @@ fun IMCScreen()
                Image(
                   modifier = Modifier
                       .size(80.dp)
-                      .padding(top = 16.dp),
+                      .padding(top = 8.dp),
                   painter = painterResource(id = R.drawable.imc),
                   contentDescription = "logo"
                )
                Text(
                    modifier = Modifier
-                       .padding(top = 12.dp, bottom = 24.dp),
+                       .padding(top = 8.dp),
                    text = "CALCULADORA IMC",
                    fontSize = 20.sp,
                    color = Color.White,
@@ -131,13 +142,13 @@ fun IMCScreen()
                ) {
                    Column(
                        modifier = Modifier
-                           .padding(top = 26.dp, start = 32.dp, end = 32.dp, bottom = 45.dp),
+                           .padding(top = 20.dp, start = 32.dp, end = 32.dp, bottom = 25.dp),
                        verticalArrangement = Arrangement.Center
                    ) {
                        Text(
                            text = "Seus dados",
                            modifier = Modifier.fillMaxWidth(),
-                           fontSize = 24.sp,
+                           fontSize = 22.sp,
                            fontWeight = FontWeight.Bold,
                            color = colorResource(id = R.color.vermelho_fiap),
                            textAlign = TextAlign.Center
@@ -192,7 +203,9 @@ fun IMCScreen()
                        Button(
                            onClick = {
                                imc = calcularImc(peso = peso.toDouble(), altura = altura.toDouble())
-                               statusImc = obterStatusImc(imc)
+                               val resultado = obterStatusImc(imc)
+                               statusImc = resultado.first
+                               corResultado = resultado.second
                            },
                            modifier = Modifier
                                .fillMaxWidth()
@@ -214,14 +227,15 @@ fun IMCScreen()
        }
 
 
+
         // --- card resultado
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
-                .padding(top = 0.dp, end = 32.dp, bottom = 70.dp, start = 32.dp)
+                .height(150.dp)
+                .padding(32.dp)
                 .align(Alignment.BottomCenter),
-            colors = CardDefaults.cardColors(containerColor = Color(0xff329F6B)),
+            colors = CardDefaults.cardColors(containerColor = corResultado),
             elevation = CardDefaults.cardElevation(10.dp)
         ) {
             Row(
@@ -248,7 +262,7 @@ fun IMCScreen()
                     modifier = Modifier.fillMaxWidth(),
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
-                    fontSize = 36.sp,
+                    fontSize = 24.sp,
                     textAlign = TextAlign.End
                 )
             }
