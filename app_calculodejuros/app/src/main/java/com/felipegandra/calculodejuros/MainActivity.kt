@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.felipegandra.calculodejuros.screens.JurosScreen
+import com.felipegandra.calculodejuros.juros.JurosScreen
+import com.felipegandra.calculodejuros.juros.JurosScreenViewModel
 import com.felipegandra.calculodejuros.ui.theme.CalculoDeJurosTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    JurosScreen()
+                    JurosScreen(JurosScreenViewModel())
                 }
             }
         }

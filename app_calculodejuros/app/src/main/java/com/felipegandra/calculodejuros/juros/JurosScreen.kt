@@ -1,33 +1,32 @@
-package com.felipegandra.calculodejuros.screens
+package com.felipegandra.calculodejuros.juros
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.felipegandra.calculodejuros.components.ButtonCalculate
 import com.felipegandra.calculodejuros.components.CardResult
 import com.felipegandra.calculodejuros.components.InputTextField
 import com.felipegandra.calculodejuros.components.SubTitleText
 import com.felipegandra.calculodejuros.components.TitleText
 
 @Composable
-fun JurosScreen() {
-    var capital by remember { mutableStateOf("") }
-    var taxa by remember { mutableStateOf("") }
-    var tempo by remember { mutableStateOf("") }
-    var juros by remember { mutableDoubleStateOf(0.0) }
-    var montante by remember { mutableDoubleStateOf(0.0) }
+fun JurosScreen(jurosScreenViewModel: JurosScreenViewModel) {
+
+    val capital by jurosScreenViewModel.capital.observeAsState(initial = "")
+    val taxa by jurosScreenViewModel.taxa.observeAsState(initial = "")
+    val tempo by jurosScreenViewModel.tempo.observeAsState(initial = "")
+    val juros by jurosScreenViewModel.juros.observeAsState(initial = 0.0)
+    val montante by jurosScreenViewModel.montante.observeAsState(initial = 0.0)
 
     Box(
         modifier = Modifier.padding(16.dp),
@@ -48,7 +47,7 @@ fun JurosScreen() {
                         value = capital,
                         keyboardType = KeyboardType.Decimal,
                         modifier = Modifier,
-                        updateValue = { capital = it }
+                        updateValue = { jurosScreenViewModel.onCapitalChanged(it) }
                     )
 
                     InputTextField(
@@ -57,7 +56,7 @@ fun JurosScreen() {
                         value = taxa,
                         keyboardType = KeyboardType.Decimal,
                         modifier = Modifier,
-                        updateValue = { taxa = it }
+                        updateValue = { jurosScreenViewModel.onTaxaChanged(it) }
                     )
 
                     InputTextField(
@@ -66,16 +65,20 @@ fun JurosScreen() {
                         value = tempo,
                         keyboardType = KeyboardType.Decimal,
                         modifier = Modifier,
-                        updateValue = { tempo = it }
+                        updateValue = { jurosScreenViewModel.onTempoChanged(it) }
                     )
 
-                    ButtonCalculate(
-                        capital = capital, taxa = taxa, tempo = tempo,
-                        response = {
-                            juros = it.first
-                            montante = it.second
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 32.dp, bottom = 16.dp),
+                        onClick = {
+                            jurosScreenViewModel.calcularJurosViewModel()
+                            jurosScreenViewModel.calcularMontanteViewModel()
                         }
-                    )
+                    ) {
+                        Text(text = "CALCULAR")
+                    }
 
                 }
 
