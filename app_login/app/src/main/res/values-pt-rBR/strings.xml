@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Login</string>
+    <string name="login">Login</string>
+    <string name="subtitle">Por favor, entre com suas informações</string>
+    <string name="email">Digite seu email</string>
+    <string name="email_required">O email é obrigatório</string>
+    <string name="password">Digite sua senha</string>
+    <string name="password_required">A senha é obrigatória</string>
+    <string name="enter">ENTRAR</string>
+</resources>
