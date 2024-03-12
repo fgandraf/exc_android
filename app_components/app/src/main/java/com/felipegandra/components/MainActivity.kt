@@ -21,9 +21,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
@@ -40,6 +40,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -365,7 +366,7 @@ fun CheckB() {
 @Composable
 fun Radio() {
     var stackSelecionada by remember {
-        mutableStateOf(-1)
+        mutableIntStateOf(-1)
     }
     Column(
         modifier = Modifier
@@ -439,7 +440,7 @@ fun Botao() {
                 ) {
                     Icon(
                         modifier = Modifier.size(20.dp),
-                        imageVector = Icons.Default.Send,
+                        imageVector = Icons.AutoMirrored.Filled.Send,
                         contentDescription = "Enviar"
                     )
                     Text(
@@ -461,7 +462,7 @@ fun Botao() {
                 ) {
                     Icon(
                         modifier = Modifier.size(20.dp),
-                        imageVector = Icons.Default.Send,
+                        imageVector = Icons.AutoMirrored.Filled.Send,
                         contentDescription = "Enviar"
                     )
                     Text(
