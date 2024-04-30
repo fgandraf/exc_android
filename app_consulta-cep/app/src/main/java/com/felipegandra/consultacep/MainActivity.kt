@@ -109,7 +109,7 @@ fun CepScreen() {
                                     listaEnderecoState = listOf<Endereco>() + response.body()!!
                                 }
 
-                                override fun onFailure(call: Call<Endereco>, t: Throwable) { }
+                                override fun onFailure(call: Call<Endereco>, t: Throwable) {}
                             })
 
                         }) {
